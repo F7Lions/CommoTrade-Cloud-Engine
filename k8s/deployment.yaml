@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: commotrade-app
+  namespace: default
+  labels:
+    app: commotrade
+spec:
+  replicas: 2  # High Availability (JD Requirement)
+  selector:
+    matchLabels:
+      app: commotrade
+  template:
+    metadata:
+      labels:
+        app: commotrade
+      annotations:
+        prometheus.io/scrape: "true" # Critical for Monitoring
+        prometheus.io/port: "8000"
+    spec:
+      containers:
+      - name: commotrade
+        image: commotrade:latest # Will be replaced by ECR URI in CI/CD
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000 # App Port
+        - containerPort: 8000 # Metrics Port
+        env:
+        - name: ENV
+          value: "production"
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "64Mi"
+          limits:
+            cpu: "500m"
+            memory: "128Mi"

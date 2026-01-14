@@ -1,0 +1,11 @@
+# --- SENSITIVE & JUNK ---
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.terraform.lock.hcl
+venv/
+__pycache__/
+*.py[cod]
+.vscode/
+.idea/
